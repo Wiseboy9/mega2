@@ -109,35 +109,12 @@ try {
     </style>
 </head>
 <body>
-    <?php include 'header.php';?>
+   
     <div class="container">
-        <h2>Formulaire de Contact</h2>
-        <?php
-        // Traitement du formulaire lors de la soumission
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $idcl = $_SESSION['user_id']; // Using session user_id instead of form input
-            $objectif = $_POST['objectif'];
-            $message = $_POST['message'];
-            $date_envoie = date("Y-m-d H:i:s");
-
-            try {
-                $sql = "INSERT INTO contact (idcl, objectif, message, date_envoie) VALUES (:idcl, :objectif, :message, :date_envoie)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
-                    ':idcl' => $idcl,
-                    ':objectif' => $objectif,
-                    ':message' => $message,
-                    ':date_envoie' => $date_envoie
-                ]);
-                echo "<div class='message success'>Message envoyé avec succès!</div>";
-            } catch(PDOException $e) {
-                echo "<div class='message error'>Erreur lors de l'envoi du message : " . $e->getMessage() . "</div>";
-            }
-        }
-        ?>
-
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <div class="client-name">Client : <?php echo htmlspecialchars($clientName); ?></div>
+        
+       
+        <form method="post" action="">
+            <div class="client-name">Client : </div>
 
             <label for="objectif">Objectif :</label>
             <textarea name="objectif" id="objectif" required></textarea>
@@ -149,6 +126,6 @@ try {
         </form>
     </div>
 
-    <?php include 'footer.php'?>
+   
 </body>
 </html>
