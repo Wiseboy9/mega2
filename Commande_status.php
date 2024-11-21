@@ -115,9 +115,7 @@
         <h2>Bienvenue, 
         
 
-    </div>
-    </div>
-       
+   
     </footer>
 </body>
 </html>
