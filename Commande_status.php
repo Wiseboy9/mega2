@@ -1,28 +1,3 @@
-<?php
-session_start();
-
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['redirect_url'] = $_SERVER['PHP_SELF'];
-    header("Location: login.php");
-    exit();
-}
-
-// Connexion à la base de données
-$pdo = new PDO('mysql:host=localhost;dbname=mega_ssd_db;charset=utf8', 'root', '');
-
-// Récupération des informations de l'utilisateur connecté
-$stmt = $pdo->prepare("SELECT idcl, nom FROM client WHERE idcl = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$user) {
-    // Si l'utilisateur n'existe pas dans la base de données, déconnexion et redirection
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -134,47 +109,15 @@ if (!$user) {
 </head>
 <body>
      <div class="main-content">
-    <?php include 'header.php';?>
+    
     <div class="container">
         <h1>Statut de Commande</h1>
-        <h2>Bienvenue, <?php echo htmlspecialchars($user['nom']); ?></h2>
+        <h2>Bienvenue, 
         
-        <?php
-        // Récupération des commandes de l'utilisateur connecté
-        $stmt = $pdo->prepare("SELECT c.idcom, c.date_commande, c.etat FROM commandes c WHERE c.idcl = ? ORDER BY c.date_commande DESC");
-        $stmt->execute([$_SESSION['user_id']]);
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        if ($orders) {
-            echo "<table>";
-            echo "<tr><th>ID Commande</th><th>Date</th><th>Statut</th></tr>";
-            foreach ($orders as $order) {
-                $statusClass = '';
-                switch ($order['etat']) {
-                    case 'En attente':
-                        $statusClass = 'en-attente';
-                        break;
-                    case 'En cours':
-                        $statusClass = 'en-cours';
-                        break;
-                    case 'Approuvée':
-                        $statusClass = 'approuvee';
-                        break;
-                }
-                echo "<tr>";
-                echo "<td>" . $order['idcom'] . "</td>";
-                echo "<td>" . $order['date_commande'] . "</td>";
-                echo "<td class='status " . $statusClass . "'>" . $order['etat'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        } else {
-            echo "<p>Vous n'avez pas encore de commandes.</p>";
-        }
-        ?>
+
     </div>
     </div>
-        <p>&copy; 2023 Mega SSD. Tous droits réservés.</p>
+       
     </footer>
 </body>
 </html>
